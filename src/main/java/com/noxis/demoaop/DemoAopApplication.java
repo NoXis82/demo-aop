@@ -17,16 +17,13 @@ public class DemoAopApplication {
         MembershipDAO theMembershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
 
         Account theAccount = new Account();
-
         theAccountDAO.addAccount(theAccount, true);
         theAccountDAO.doWork();
 
         theMembershipDAO.addMembership();
         theMembershipDAO.goToSleep();
 
-
         context.close();
 
     }
-
 }
