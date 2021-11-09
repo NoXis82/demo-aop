@@ -18,6 +18,8 @@ public class DemoAopApplication {
 
         //Account
         Account theAccount = new Account();
+        theAccount.setName("NoXis");
+        theAccount.setLevel("Gold");
         theAccountDAO.addAccount(theAccount, true);
         theAccountDAO.doWork();
         theAccountDAO.setName("foobar");
