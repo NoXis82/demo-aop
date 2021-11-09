@@ -5,8 +5,10 @@ import com.noxis.demoaop.dao.MembershipDAO;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.List;
+
 @SpringBootApplication
-public class DemoAopApplication {
+public class AfterReturningDemoApp {
 
     public static void main(String[] args) {
         //SpringApplication.run(DemoAopApplication.class, args);
@@ -14,20 +16,13 @@ public class DemoAopApplication {
                 new AnnotationConfigApplicationContext(DemoConfig.class);
 
         AccountDAO theAccountDAO = context.getBean("accountDAO", AccountDAO.class);
-        MembershipDAO theMembershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
 
-        //Account
-        Account theAccount = new Account("NoXis", "Gold");
-        theAccountDAO.addAccount(theAccount, true);
-        theAccountDAO.doWork();
-        theAccountDAO.setName("foobar");
-        theAccountDAO.setServiceCode("silver");
-        String name = theAccountDAO.getName();
-        String code = theAccountDAO.getServiceCode();
+        List<Account> myAccounts = theAccountDAO.findAccounts();
 
-        //Membership
-        theMembershipDAO.addMembership();
-        theMembershipDAO.goToSleep();
+        System.out.println("TEST ----> AfterReturningDemo");
+        System.out.println("----");
+        System.out.println(myAccounts);
+        System.out.println("\n");
 
         context.close();
 
