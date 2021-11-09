@@ -16,10 +16,16 @@ public class DemoAopApplication {
         AccountDAO theAccountDAO = context.getBean("accountDAO", AccountDAO.class);
         MembershipDAO theMembershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
 
+        //Account
         Account theAccount = new Account();
         theAccountDAO.addAccount(theAccount, true);
         theAccountDAO.doWork();
+        theAccountDAO.setName("foobar");
+        theAccountDAO.setServiceCode("silver");
+        String name = theAccountDAO.getName();
+        String code = theAccountDAO.getServiceCode();
 
+        //Membership
         theMembershipDAO.addMembership();
         theMembershipDAO.goToSleep();
 
