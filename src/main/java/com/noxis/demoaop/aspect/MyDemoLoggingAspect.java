@@ -9,24 +9,26 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Aspect
 @Component
 @Order(1)
 public class MyDemoLoggingAspect {
 
+    private Logger myLogger = Logger.getLogger(getClass().getName());
+
     @Around("execution(* com.noxis.demoaop.service.*.getFortune(..))")
     public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
         String method = proceedingJoinPoint.getSignature().toShortString();
         System.out.println("\n====> Executing @Around on method: " + method);
-
+        myLogger.info("\n====> Executing @Around on method: \" + method");
         long begin = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis();
         long duration = end - begin;
         System.out.println("\n====> Duration: " + duration/1000 + " sec");
-
+        myLogger.info("\n====> Duration: " + duration/1000 + " sec");
         return result;
     }
 
