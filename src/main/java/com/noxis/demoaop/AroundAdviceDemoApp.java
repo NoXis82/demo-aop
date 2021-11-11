@@ -22,8 +22,9 @@ public class AroundAdviceDemoApp {
         myLogger.info("\nMain Program: AroundAdviceDemoApp");
         System.out.println("Calling getFortune method");
         myLogger.info("Calling getFortune method");
-
-        String data = service.getFortune();
+        //simulate exception
+        boolean tripWire = true;
+        String data = service.getFortune(tripWire);
 
         System.out.println("\nResult data: " + data);
         myLogger.info("\nResult data: " + data);

@@ -20,15 +20,22 @@ public class MyDemoLoggingAspect {
 
     @Around("execution(* com.noxis.demoaop.service.*.getFortune(..))")
     public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Object result = null;
         String method = proceedingJoinPoint.getSignature().toShortString();
         System.out.println("\n====> Executing @Around on method: " + method);
         myLogger.info("\n====> Executing @Around on method: \" + method");
         long begin = System.currentTimeMillis();
-        Object result = proceedingJoinPoint.proceed();
+        try {
+            result = proceedingJoinPoint.proceed();
+        } catch (Exception err) {
+            System.out.println("@Around advice: We have a problem " + err);
+            myLogger.warning(err.getMessage());
+            result = "Nothing exciting here. Move along!";
+        }
         long end = System.currentTimeMillis();
         long duration = end - begin;
-        System.out.println("\n====> Duration: " + duration/1000 + " sec");
-        myLogger.info("\n====> Duration: " + duration/1000 + " sec");
+        System.out.println("\n====> Duration: " + duration / 1000 + " sec");
+        myLogger.info("\n====> Duration: " + duration / 1000 + " sec");
         return result;
     }
 
@@ -81,9 +88,7 @@ public class MyDemoLoggingAspect {
         MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
         System.out.println("Method: " + methodSig);
 
-        //display method arguments
-
-        //get args
+        //display method arguments ans get args
         Object[] args = theJoinPoint.getArgs();
         for (Object tempArg : args) {
             System.out.println(tempArg);
