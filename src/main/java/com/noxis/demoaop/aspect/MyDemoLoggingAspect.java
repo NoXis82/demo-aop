@@ -2,6 +2,7 @@ package com.noxis.demoaop.aspect;
 
 import com.noxis.demoaop.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -13,6 +14,21 @@ import java.util.List;
 @Component
 @Order(1)
 public class MyDemoLoggingAspect {
+
+    @Around("execution(* com.noxis.demoaop.service.*.getFortune(..))")
+    public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+        String method = proceedingJoinPoint.getSignature().toShortString();
+        System.out.println("\n====> Executing @Around on method: " + method);
+
+        long begin = System.currentTimeMillis();
+        Object result = proceedingJoinPoint.proceed();
+        long end = System.currentTimeMillis();
+        long duration = end - begin;
+        System.out.println("\n====> Duration: " + duration/1000 + " sec");
+
+        return result;
+    }
 
     @After("execution(* com.noxis.demoaop.dao.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountAdvice(JoinPoint theJoinPoint) {
