@@ -2,10 +2,7 @@ package com.noxis.demoaop.aspect;
 
 import com.noxis.demoaop.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +13,12 @@ import java.util.List;
 @Component
 @Order(1)
 public class MyDemoLoggingAspect {
+
+    @After("execution(* com.noxis.demoaop.dao.AccountDAO.findAccounts(..))")
+    public void afterFinallyFindAccountAdvice(JoinPoint theJoinPoint) {
+        String method = theJoinPoint.getSignature().toShortString();
+        System.out.println("\n ====>>> Execution @After (finally) on method: " + method);
+    }
 
     // add @AfterThrowing
     @AfterThrowing(
