@@ -3,6 +3,7 @@ package com.noxis.demoaop.aspect;
 import com.noxis.demoaop.Account;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -16,14 +17,23 @@ import java.util.List;
 @Order(1)
 public class MyDemoLoggingAspect {
 
-    //add @afterReturning
+    // add @AfterThrowing
+    @AfterThrowing(
+            pointcut = "execution(* com.noxis.demoaop.dao.AccountDAO.findAccounts(..))",
+            throwing = "theExc"
+    )
+    public void afterThrowingFindAccountsAdvice(JoinPoint theJoinPoint, Throwable theExc) {
+        String method = theJoinPoint.getSignature().toShortString();
+        System.out.println("\n ====>>> Execution @AfterThrowing on method: " + method);
+        System.out.println("\n ====>>> The exception is: " + theExc);
+    }
+
+    //add @AfterReturning
     @AfterReturning(
             pointcut = "execution(* com.noxis.demoaop.dao.AccountDAO.findAccounts(..))",
             returning = "result"
     )
-    public void afterReturningFindAccountsAdvice(
-            JoinPoint theJoinPoint, List<Account> result
-    ) {
+    public void afterReturningFindAccountsAdvice(JoinPoint theJoinPoint, List<Account> result) {
         String method = theJoinPoint.getSignature().toShortString();
         System.out.println("\n ====>>> Execution @AfterReturning on method: " + method);
         System.out.println("\n ====>>> Result is: " + result);
@@ -36,7 +46,7 @@ public class MyDemoLoggingAspect {
     }
 
     private void convertAccountNamesToUpperCase(List<Account> result) {
-        for (Account tempAccount: result) {
+        for (Account tempAccount : result) {
             String theUpperName = tempAccount.getName().toUpperCase();
             tempAccount.setName(theUpperName);
         }
